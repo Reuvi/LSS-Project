@@ -5,6 +5,6 @@
 The sensitivity is lower with high VOC concentrations
 compared to low VOC concentrations; when C changes
 from 1 to 20, R_inf drops by a factor of about 6.07
-i.e., 66821 [Ω]
+i.e., it drops by about 66821 [Ω]
 and when C changes from 81 to 100, R_inf drops by
-a factor of about 1.13 (676.44 [Ω])
+a factor of about 1.13 (a drop of about 676.44 [Ω])
