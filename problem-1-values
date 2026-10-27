@@ -1,0 +1,31 @@
+Results
+
+Time spent travelling, not including time spent stopped
+t_travel_total = 52.870 seconds
+
+Time spent during each sensing period
+t_sensing_once = 60 seconds
+
+Total time for the mission
+t_mission = t_sensing_once*4 + t_travel_total
+t_mission = 292.87 seconds
+
+Remaining charge percent
+q_after_mission = 0.6078
+                = 60.78%
+
+
+x(t) = 2 +
+    6*r((t-60)/14.32)  -  6*r((t-60)/14.32 - 1) +
+    4*r((t-74.32)/6.41)  -  4*r((t-74.32)/6.41 - 1) +
+    8*r((t-140.73)/9.44)  -  8*r((t-140.73)/9.44 - 1) +
+    10*r((t-150.17)/14.15)  -  10*r((t-150.17)/14.15 - 1) +
+    8*r((t-224.32)/8.55)  -  8*r((t-224.32)/8.55 - 1)
+
+y(t) = 2 +
+    13*r((t-60)/14.32)  -  13*r((t-60)/14.32 - 1) +
+    -5*r((t-74.32)/6.41)  +  5*r((t-74.32)/6.41 - 1) +
+    -5*r((t-140.73)/9.44)  +  5*r((t-140.73)/9.44 - 1) +
+    10*r((t-150.17)/14.15)  -  10*r((t-150.17)/14.15 - 1) +
+    3*r((t-224.32)/8.55)  -  3*r((t-224.32)/8.55 - 1)
+

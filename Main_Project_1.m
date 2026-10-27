@@ -1,0 +1,275 @@
+%% Industrial Monitoring Project
+% Main script
+
+clear;
+clc;
+close all;
+
+%% ================================================================
+% Load and display the industrial environment
+% ================================================================
+
+% env = factoryEnvironment();
+
+% robot from 2,2 to 38,18
+% collision radius is 0.4 m
+% speed up to 1 m/s
+
+% q_critical_battery = 0.6
+% q(t) = q(0)*e^(λ*t)
+%   q(0)=1, fully charged at t=0
+% q(t) = e^(-1.7*10^-3*t)
+% 0.6 = e^(-1.7*10^-3*t)
+% log(0.6) = -1.7*10^-3*t
+
+% [seconds]
+t_before_critical = -10^3/1.7*log(0.6)
+
+function [value] = ramp(t)
+    % matrix-compatible implementation
+    value = max(0, t);
+
+    % simple implementation
+    % if t>=0
+    %     value = t;
+    % else
+    %     value = 0;
+    % end
+end
+
+% linear interpolation, from `a` to `b`, where `t ∈ [0,1]` indicates the percentage from `a` towards `b`
+% function [value] = lerp(a,b,t)
+%     value = a + (b-a)*t
+% end
+
+function [x,y] = position(t)
+    % <60 second response time to 90%, according to SGAS707 datasheet
+    % 4 stops for measurement
+    % time for travel is about 52.84 seconds, leaving
+    % a little over 247/4 seconds for each sensing period
+    % [seconds]
+    t_sensing_once = 60;
+
+    % workflow
+    % measure
+    % 2,2 to 8,15
+    % measure
+    % 8,15 to 12,10
+    % 12,10 to 20,5
+    % measure
+    % 20,5 to 30,15
+    % 30,15 to 38,18
+    % measure
+
+    locations = [
+        2,  2;
+        8,  15;
+        12, 10;
+        20, 5;
+        30, 15;
+        38, 18
+    ];
+
+    % t_travel is time between each location
+    % if moving in a straight line at 1 [m/s]
+    t_travel = [];
+    for i = 2:size(locations,1)
+        vector = (locations(i,1:2) - locations(i-1,1:2));
+        dist = sqrt(vector(1)^2 + vector(2)^2);
+        t_seconds = dist / 1; % t = d / 1 [m/s]
+        t_travel = [t_travel, t_seconds];
+    end
+
+    % round up t_travel for nice numbers
+    % make sure to round UP so that speed
+    % is no more than 1 [m/s]
+    % t_travel = 14.3178, 6.4031, 9.4340, 14.142, 8.5440
+    t_travel_rounded = [14.32, 6.41, 9.44, 14.15, 8.55]
+    for i=1:size(t_travel_rounded,2)
+        if t_travel_rounded(i) < t_travel(i)
+            disp("ERROR: SPEED TOO FAST")
+        end
+    end
+
+
+    % 2,8,12,20,30,38
+    % x(t) = 2 + (8-2)*r((t-60)/14.32) - (8-2)*r((t-60)/14.32-1)
+    fprintf("\nx(t) = 2 +\n");
+    elapsed_time = t_sensing_once; % starting time; start moving after sensing once
+    x = zeros(size(t)) + 2; % starting position
+    for i = 2:size(locations,1)
+        location_diff = locations(i,1)-locations(i-1,1);
+        % ramp up to `distance` units at a speed of distance/length_of_travel [m/s] before stopping:
+        %    distance * min(1, ramp((t-t0)/length_of_travel))
+        x += location_diff*min(1,ramp((t-elapsed_time)/t_travel_rounded(i-1)));
+        if i == size(locations,1)
+            fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1)\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
+        else
+            fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1) +\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
+            elapsed_time = elapsed_time + t_travel_rounded(i-1);
+            % there are sensing stops at i=1,3,5
+            if i==1 || i==3 || i==5
+                elapsed_time = elapsed_time + t_sensing_once;
+            end
+        end
+    end
+
+    fprintf("\ny(t) = 2 +\n");
+    elapsed_time = t_sensing_once; % starting time; start moving after sensing once
+    y = zeros(size(t)) + 2; % starting position
+    for i = 2:size(locations,1)
+        location_diff = locations(i,2)-locations(i-1,2);
+        % ramp up to `distance` units at a speed of distance/length_of_travel [m/s] before stopping:
+        %    distance * min(1, ramp((t-t0)/length_of_travel))
+        y += location_diff*min(1,ramp((t-elapsed_time)/t_travel_rounded(i-1)));
+        if i == size(locations,1)
+            fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1)\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
+        else
+            fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1) +\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
+            elapsed_time = elapsed_time + t_travel_rounded(i-1);
+            % there are sensing stops at i=1,3,5
+            if i==1 || i==3 || i==5
+                elapsed_time = elapsed_time + t_sensing_once;
+            end
+        end
+    end
+
+
+    % t_travel_total = sum(t_travel_rounded)
+    % t_sensing_once
+    % t_mission = sum(t_travel_rounded) + t_sensing_once*4
+    % q_after_mission = e^(-1.7*10^-3*t_mission)
+end
+
+t = 0:0.01:300;
+[x,y] = position(t);
+
+% whether to plot [factory, x(t), y(t), |v(t)|]
+plots = [0 0 0 0]
+
+if plots(1) != 0
+    env = factoryEnvironment();
+
+    plot(x, y, '.')
+    theta = linspace(0,2*pi,10);
+    radius = 0.4;
+    for k = 1:floor(size(t,2)/4)
+        xc = x(k*4);
+        yc = y(k*4);
+        xCircle = xc + radius*cos(theta);
+        yCircle = yc + radius*sin(theta);
+        fill(xCircle, yCircle, [0.70 0.70 0.70], 'EdgeColor','r', 'LineWidth',1.5);
+    end
+
+
+    circles = [
+        2,2;
+        8,15;
+        20,5;
+        38,18;
+    ];
+    theta = linspace(0,2*pi,10);
+    radius = 0.1;
+    for k = 1:size(circles,1)
+        xc = circles(k,1);
+        yc = circles(k,2);
+        xCircle = xc + radius*cos(theta);
+        yCircle = yc + radius*sin(theta);
+        fill(xCircle, yCircle, [0.70 0.70 0.70], 'EdgeColor','g', 'LineWidth',1.5);
+    end
+end
+
+if plots(2) != 0
+    figure
+    plot(t, x)
+    title("x-axis position over time")
+    xlabel("t [s]")
+    ylabel("x [m]")
+end
+
+if plots(3) != 0
+    figure
+    plot(t, y)
+    title("y-axis position over time")
+    xlabel("t [s]")
+    ylabel("y [m]")
+end
+
+
+if plots(4) != 0
+    x_speed = (x(2:end) - x(1:end-1))/0.01;
+    y_speed = (y(2:end) - y(1:end-1))/0.01;
+    v = sqrt(x_speed.^2 + y_speed.^2);
+    figure
+    hold on
+    plot(t(1:end-1),v)
+    plot([0,300], [1,1])
+    xlabel("t [s]")
+    ylabel("v [m/s]")
+end
+
+
+
+% PROBLEM 1 FINAL VALUES
+% x(t) = 2 +
+%     6.00*r((t-60.00)/14.32)  -  6.00*r((t-60.00)/14.32-1) +
+%     4.00*r((t-74.32)/6.41)  -  4.00*r((t-74.32)/6.41-1) +
+%     8.00*r((t-140.73)/9.44)  -  8.00*r((t-140.73)/9.44-1) +
+%     10.00*r((t-150.17)/14.15)  -  10.00*r((t-150.17)/14.15-1) +
+%     8.00*r((t-224.32)/8.55)  -  8.00*r((t-224.32)/8.55-1)
+%
+% y(t) = 2 +
+%     13.00*r((t-60.00)/14.32)  -  13.00*r((t-60.00)/14.32-1) +
+%     -5.00*r((t-74.32)/6.41)  -  -5.00*r((t-74.32)/6.41-1) +
+%     -5.00*r((t-140.73)/9.44)  -  -5.00*r((t-140.73)/9.44-1) +
+%     10.00*r((t-150.17)/14.15)  -  10.00*r((t-150.17)/14.15-1) +
+%     3.00*r((t-224.32)/8.55)  -  3.00*r((t-224.32)/8.55-1)
+
+% measurement coordinates at (2,2), (8,15), (20,5), (38,18)
+% t_travel_total = 52.870
+% t_sensing_once = 60
+% t_mission = 292.87
+% q_after_mission = 0.6078
+
+
+
+
+
+
+
+
+
+% PROBLEM 2.
+% R_inf = A*C^(-alpha)
+% alpha = 0.602
+% A = 8.0*10^4
+% R_inf = 8.0*10^4*C^(-0.602)
+
+C = 1:0.1:100;
+R_inf = 8.0*10^4*C.^(-0.602)
+
+% whether to plot [linear, logarithmic]
+plots_2 = [0 0]
+
+if plots_2(1) != 0
+    figure
+    plot(C,R_inf)
+    xlabel("C [ppm]")
+    ylabel("R_{∞} [Ω]")
+end
+if plots_2(2) != 0
+    figure
+    loglog(C,R_inf)
+    xlabel("C [ppm]")
+    ylabel("R_{∞} [Ω]")
+end
+
+
+% 2.iii DISCUSSION
+% The sensitivity is lower with high VOC concentrations
+% compared to low VOC concentrations; when C changes
+% from 1 to 20, R_inf drops by a factor of about 6.07
+% i.e., 66821 [Ω]
+% and when C changes from 81 to 100, R_inf drops by
+% a factor of about 1.13 (676.44 [Ω])
+
