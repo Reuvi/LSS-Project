@@ -101,7 +101,7 @@ function [x,y] = position(t)
         location_diff = locations(i,1)-locations(i-1,1);
         % ramp up to `distance` units at a speed of distance/length_of_travel [m/s] before stopping:
         %    distance * min(1, ramp((t-t0)/length_of_travel))
-        x += location_diff*min(1,ramp((t-elapsed_time)/t_travel_rounded(i-1)));
+        x = x + location_diff*min(1,ramp((t-elapsed_time)/t_travel_rounded(i-1)));
         if i == size(locations,1)
             fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1)\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
         else
@@ -121,7 +121,7 @@ function [x,y] = position(t)
         location_diff = locations(i,2)-locations(i-1,2);
         % ramp up to `distance` units at a speed of distance/length_of_travel [m/s] before stopping:
         %    distance * min(1, ramp((t-t0)/length_of_travel))
-        y += location_diff*min(1,ramp((t-elapsed_time)/t_travel_rounded(i-1)));
+        y = y + location_diff*min(1,ramp((t-elapsed_time)/t_travel_rounded(i-1)));
         if i == size(locations,1)
             fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1)\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
         else
@@ -179,7 +179,7 @@ if plots(1) ~= 0
     end
 end
 
-if plots(2) != 0
+if plots(2) ~= 0
     figure
     plot(t, x)
     title("x-axis position over time")
@@ -187,7 +187,7 @@ if plots(2) != 0
     ylabel("x [m]")
 end
 
-if plots(3) != 0
+if plots(3) ~= 0
     figure
     plot(t, y)
     title("y-axis position over time")
@@ -196,7 +196,7 @@ if plots(3) != 0
 end
 
 
-if plots(4) != 0
+if plots(4) ~= 0
     x_speed = (x(2:end) - x(1:end-1))/0.01;
     y_speed = (y(2:end) - y(1:end-1))/0.01;
     v = sqrt(x_speed.^2 + y_speed.^2);
@@ -251,13 +251,13 @@ R_inf = 8.0*10^4*C.^(-0.602)
 % whether to plot [linear, logarithmic]
 plots_2 = [0 0]
 
-if plots_2(1) != 0
+if plots_2(1) ~= 0
     figure
     plot(C,R_inf)
     xlabel("C [ppm]")
     ylabel("R_{∞} [Ω]")
 end
-if plots_2(2) != 0
+if plots_2(2) ~= 0
     figure
     loglog(C,R_inf)
     xlabel("C [ppm]")
