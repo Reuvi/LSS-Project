@@ -147,7 +147,7 @@ t = 0:0.01:300;
 % whether to plot [factory, x(t), y(t), |v(t)|]
 plots = [0 0 0 0]
 
-if plots(1) != 0
+if plots(1) ~= 0
     env = factoryEnvironment();
 
     plot(x, y, '.')
