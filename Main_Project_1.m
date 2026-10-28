@@ -9,7 +9,7 @@ close all;
 % Load and display the industrial environment
 % ================================================================
 
-% env = factoryEnvironment();
+env = factoryEnvironment();
 
 % robot from 2,2 to 38,18
 % collision radius is 0.4 m
