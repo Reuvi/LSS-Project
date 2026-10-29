@@ -1,0 +1,41 @@
+4.i 
+    We are no longer assuming Rs(T) = Rinf(C)
+    tau R' + R = Rinf
+    tau = 22
+
+    Rewriting the equation using integrating factor method
+    R' + (1/Tau) * R = Rinf(t) / Tau
+    u(x) = e^(integral(1/tau) dt)
+    => u(x) e^(t/22)
+    R(t) = 1/e^(t/22) * (integral (e^(t/22) * Rinf(t)/22 dt) + C)
+
+    Linearity:
+    By definition of linear ODE's this equation is a first order 
+    linear differential equation. Theirfore it has linearity
+
+    Time-Invarience: 
+    h(z(t)) = z(t) - 22 * R'(t)
+    h(rinf(t - t0)) = rinf(t - t0) - 22 * R'(t)
+    R(t - t0) = rinf(t - t0) - 22*R'(t - t0)
+    Time Varying, not as h(rinf(t-t0)) != R(t - t0)
+
+    Causality:
+    r(t) = rinf(t) - 22r'(t)
+    r(t - t0) = rinf(t - t0) - 22r'(t - t0)
+    r(-t) = rinf(-t) - 22r'(-t)
+    r(-t - t0) = rinf(t - t0) - 22r'(t - t0)
+    Equation appears to be causal dependant on only current values of 
+    T and past values. I emphasize here that we are defining the 
+    derivitve in terms of its backword propogation. 
+        lim dt -> 0, X'(t) = (X(t) - X(t - dt))/dt
+
+    Stability:
+    Assume |rInf(T)| is bounded by B
+    |R(t) + 22R'(t)| = |rInf(t)|
+    |rInf(T)| <= |R(t)| + |22R'(t)|
+    -|R(t)| <= |22R'(t)| - |rinf(T)|
+    |R(t)| >= |22R'(t)| - |rinf(T)| 
+
+    
+
+

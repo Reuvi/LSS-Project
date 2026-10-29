@@ -1,0 +1,35 @@
+3.i 
+    We derive the expression by doing some algebra 
+    and plugging in known values given to us from the problem. 
+        1. Vout(t) = VcRL / (Rs(t) + RL)
+        2. Vout(t) = 5 * 10^4 / (Rinf(t) + 10^4)
+        3. Vout(C) = 5 * 10^4 / (8.0*10^4*C^(-0.602) + 10^4)
+
+3.ii 
+    graph called 3-ii-cout-vs-c.png
+
+3.iii 
+    The transformation from the VOC concentration to output voltage is
+    not linear. As the concentration increases the VOut detection
+    increases logarythmically. 
+
+3.iv 
+    An expression for Rs can be obtained by manipulating the original
+    equation with some algebra
+        1. Vout(t) = VcRL / (Rs(t) + RL)
+        2. Vout(t) * Rs(t) + Vout(t) * RL = VcRL
+        3. Rs(t) = (Vc*RL - Vout(t) * RL) / Vout(T)
+        4. Rs(t) = RL(Vc - Vout(T)) / Vout(t)
+        5. Rs(t) = 10^4 * (5 - Vout(t)) / Vout(t)
+        6. Rs(t) = -10000 + 50000 / Vout(T)
+
+3.v
+    Now we use our approximation that Rs~Rinf(C) and re-arrange with 
+    algebra
+        1. Rs(t) = -10000 + 50000 / Vout(T)
+        2. 8.0*10^4*C^(-0.602) = -10000 + 50000 / Vout(T)
+        3. C^(-0.602) = (-10000 + (50000 / Vout(T))) / (8.0*10^4)
+        4. C^(0.602) = 1 / ((-10000 + (50000 / Vout(T))) / (8.0*10^4))
+        5. C(t) = (1 / ((-10000 + (50000 / Vout(T))) / (8.0*10^4))) ^ (1/0.602)
+        6. (Rearrange) C(t) = (80000 / (-10000 + 50000 / Vout(t)))^(1/0.602)
+        7. C(t) = ( ( 80000 * Vout(t) ) / (-10000 * Vout(t) + 50000))^(1/0.602)

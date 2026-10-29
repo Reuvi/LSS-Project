@@ -9,7 +9,7 @@ close all;
 % Load and display the industrial environment
 % ================================================================
 
-env = factoryEnvironment();
+%env = factoryEnvironment();
 
 % robot from 2,2 to 38,18
 % collision radius is 0.4 m
@@ -273,3 +273,49 @@ end
 % and when C changes from 81 to 100, R_inf drops by
 % a factor of about 1.13 (a drop of about 676.44 [Ω])
 
+
+
+
+
+
+
+% Problem 3
+% Eq 1. Vout(T) = Vc * RL / (Rs(t)) + RL)
+% Eq 2. Rs = Rinf(c). We assume we have reached a steady state solution
+% Knowns Vc = 5, Rl = 10,000 Ohms
+
+% 3.i Expression derived in writeup
+Vc = 5;
+Rl = 10000;
+Vout = Vc * Rl ./ (R_inf + Rl);
+
+% 3.ii
+plots_3 = [0];
+
+if plots_3(1) ~= 0
+    figure
+    plot(C,Vout);
+    xlabel("C [ppm]");
+    ylabel("Vout [V]");
+end
+
+% 3.iii Discussion
+    %The transformation from the VOC concentration to output voltage is
+    %not linear. As the concentration increases the VOut detection
+    %increases logarythmically. 
+
+% 3.iv Expression derived in the writeup
+    %  Rs(t) = -10000 + 50000 / Vout(T)
+
+% 3.v Expression derived in the writeup
+    % C(t) = ( ( 80000 * Vout(t) ) / (-10000 * Vout(t) + 50000))^(1/0.602)
+
+
+
+
+
+
+
+
+    
+% Problem 4
