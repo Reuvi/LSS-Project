@@ -1,3 +1,5 @@
+Author: Reuven
+
 4.i 
     We are no longer assuming Rs(T) = Rinf(C)
     tau R' + R = Rinf
@@ -30,11 +32,7 @@
         lim dt -> 0, X'(t) = (X(t) - X(t - dt))/dt
 
     Stability:
-    Assume |rInf(T)| is bounded by B
-    |R(t) + 22R'(t)| = |rInf(t)|
-    |rInf(T)| <= |R(t)| + |22R'(t)|
-    -|R(t)| <= |22R'(t)| - |rinf(T)|
-    |R(t)| >= |22R'(t)| - |rinf(T)| 
+    
 
     
 
