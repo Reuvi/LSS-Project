@@ -1,5 +1,6 @@
 %% Industrial Monitoring Project
 % Main script
+% Problem Solutions start further down
 
 clear;
 clc;
@@ -246,7 +247,7 @@ end
 % R_inf = 8.0*10^4*C^(-0.602)
 
 C = 1:0.1:100;
-R_inf = 8.0*10^4*C.^(-0.602)
+R_inf = 8.0*10^4*C.^(-0.602);
 
 % whether to plot [linear, logarithmic]
 plots_2 = [0 0]
@@ -290,7 +291,7 @@ Rl = 10000;
 Vout = Vc * Rl ./ (R_inf + Rl);
 
 % 3.ii
-plots_3 = [0];
+plots_3 = [0]
 
 if plots_3(1) ~= 0
     figure
@@ -317,5 +318,5 @@ end
 
 
 
-    
+
 % Problem 4
