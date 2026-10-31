@@ -423,7 +423,7 @@ k12 = min(floor(sampled_vout ./ DV12), L12 - 1);
 ADC12 = (k12 + 0.5) * DV12;
 
 %5.iv, graphs in graph section
-plots_5 = [1, 1, 1];
+plots_5 = [0, 0, 0, 1];
 
 if plots_5(1) ~= 0
     figure;
@@ -470,8 +470,56 @@ if plots_5(3) ~= 0
     hold off;
 end
 
-%5.v
+%5.v Quantize the steady-state voltage from Problem 3
 
-%5.vi
+VQ8_C = (min(floor(Vout ./ DV8), L8 - 1) + 0.5) .* DV8;
+VQ10_C = (min(floor(Vout ./ DV10), L10 - 1) + 0.5) .* DV10;
+VQ12_C = (min(floor(Vout ./ DV12), L12 - 1) + 0.5) .* DV12;
+
+%Reconstruct concentration from each quantized voltage
+
+C_hat8 = ((80000 .* VQ8_C) ./ (50000 - 10000 .* VQ8_C)).^(1 / 0.602);
+
+C_hat10 = ((80000 .* VQ10_C) ./ (50000 - 10000 .* VQ10_C)).^(1 / 0.602);
+
+C_hat12 = ((80000 .* VQ12_C) ./ (50000 - 10000 .* VQ12_C)).^(1 / 0.602);
+
+%5.vi Absolute relative concentration error, in percent
+
+eC8 = 100 .* abs(C_hat8 - C) ./ C;
+eC10 = 100 .* abs(C_hat10 - C) ./ C;
+eC12 = 100 .* abs(C_hat12 - C) ./ C;
+
+if plots_5(4) ~= 0
+    figure;
+
+    plot(C, eC8, 'r-', 'LineWidth', 1.2);
+    hold on;
+
+    plot(C, eC10, 'g-', 'LineWidth', 1.2);
+
+    plot(C, eC12, 'y-', 'LineWidth', 1.2);
+
+    hold off;
+    grid on;
+
+    xlabel('C [ppm]');
+    ylabel('Relative concentration error [%]');
+    title('Concentration error after ADC quantization');
+    legend('8-bit ADC', '10-bit ADC', '12-bit ADC', 'Location', 'best');
+end
+
+
+[max_eC8, index_eC8] = max(eC8);
+[max_eC10, index_eC10] = max(eC10);
+[max_eC12, index_eC12] = max(eC12);
+
 
 %5.vii and 5.viii in the writeup
+
+% Statistics used for comparing them
+fprintf('8-bit: max = %.4f%% at %.1f ppm; mean = %.4f%%\n', max_eC8, C(index_eC8), mean(eC8));
+
+fprintf('10-bit: max = %.4f%% at %.1f ppm; mean = %.4f%%\n', max_eC10, C(index_eC10), mean(eC10));
+
+fprintf('12-bit: max = %.4f%% at %.1f ppm; mean = %.4f%%\n', max_eC12, C(index_eC12), mean(eC12));

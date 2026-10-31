@@ -1,3 +1,21 @@
 Author: Reuven
 
 5.i -> 5.vi on the matlab file
+
+5.vii 
+   No. The relative concentration error is not uniform over the full concentration range.
+   The ADC uses uniformly spaced voltage levels, but the relationship used to convert voltage,
+   back into concentration is nonlinear. Consequently, the same voltage error can produce
+   different concentration errors at different concentrations. The quantization error also 
+   depends on where the true voltage falls within a quantization bin. The error is small near
+   the midpoint and larger near the boundaries. As concentration increases, the voltage passes
+   through succesive bins, producing the repeated rises and falls observed in the error curves.
+
+5. viii
+    I recomend the 12-bit ADC. On the tests with concentration from 1 to 100 ppm in increments
+    of 0.1 ppm, its maximum relative concentration error was approximately 0.169%, compared
+    with 0.609% for the 10 bit ADC and 2.703% for the 8bit ADC. It also has the finest voltage
+    quantization at approximately 1.22mv and it produced the lowest mean relative concentration
+    error of approximatly 0.0436%. The 12bit ADC minmized the concentration measurment error
+    compared to the others, it theirfore is the more accurate sampler. This makes sense as the 
+    more resolution you have the closer you are to the original signal.
