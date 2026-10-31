@@ -5,33 +5,91 @@ Author: Reuven
     tau R' + R = Rinf
     tau = 22
 
-    Rewriting the equation using integrating factor method
-    R' + (1/Tau) * R = Rinf(t) / Tau
-    u(x) = e^(integral(1/tau) dt)
-    => u(x) e^(t/22)
-    R(t) = 1/e^(t/22) * (integral (e^(t/22) * Rinf(t)/22 dt) + C)
-
     Linearity:
     By definition of linear ODE's this equation is a first order 
-    linear differential equation. Theirfore it has linearity
+    linear differential equation. Theirfore it has linearity.
+
+    We can also proove it.
+    
+    Suppose Rinf1 -> R1 and Rinf2 -> R2
+    22R'1 + R1 = Rinf1
+    22R'2 + R2 = Rinf2
+
+    We need to proove that the combination of outputs corresponds
+    to the combination of inputs. 
+    Suppose we add both equations after multiplying them by some factor
+    a and b respectively
+
+    a22R'1 + aR1 + b22'2 + bR2 = ainf1 + bRinf2
+
+    Re-arranging we get
+
+    22(aR1 + bR2)' + (aR1 + bR2) = ainf1 + bRinf2
+    This is the definition of linearity!
 
     Time-Invarience: 
-    h(z(t)) = z(t) - 22 * R'(t)
-    h(rinf(t - t0)) = rinf(t - t0) - 22 * R'(t)
-    R(t - t0) = rinf(t - t0) - 22*R'(t - t0)
-    Time Varying, not as h(rinf(t-t0)) != R(t - t0)
+    Suppose r(t) = rinf(t) - 22r'(t)
+    Call the mapping of r(t) to become
+    H {z(t), r'(t)} => z(t) - 22r'(t), where r'(t) is fixed as the time 
+    derivitve of its output, z(t) is flexible, and the value t is shared.
+    H{rinf(t - t0), r'(t - t0)} => rinf(t - t0) - r'(t - t0)
+
+    R(t - t0) = rinf(t - t0) - 22r'(t - t0)
+
+    Definition of time invarience: 
+        H{rinf(t - t0), r'(t - t0)} = r(t - t0)
+
+    Theirfore it is time invarient.
+
+
+    I defer to the work in section 4.ii and 4.iii for how I derived the
+    impulse response.
+
+    h(t) = e^(-t/22) / 22, t >= 0, 0 for t < 0 [Derived later on]
 
     Causality:
-    r(t) = rinf(t) - 22r'(t)
-    r(t - t0) = rinf(t - t0) - 22r'(t - t0)
-    r(-t) = rinf(-t) - 22r'(-t)
-    r(-t - t0) = rinf(t - t0) - 22r'(t - t0)
-    Equation appears to be causal dependant on only current values of 
-    T and past values. I emphasize here that we are defining the 
-    derivitve in terms of its backword propogation. 
-        lim dt -> 0, X'(t) = (X(t) - X(t - dt))/dt
+    The system is causal as h(t) = 0 for all t < 0
 
     Stability:
+    Integral(h(t))[-infinity, infinity] must converge for stability
+
+    1/22 * integral(|e^(-t/22)|) [0, infinity]
+                <=>
+    0 + 1 = 1 < infinity theirfore it is BIBO stable
+
+
+4.ii
+    Consider Rinf(t) = u(t)
+    
+    Rewriting the equation using integrating factor method
+    R' + (1/22) * R = u(t) / 22
+    u(x) = e^(integral(1/22) dt)
+    <=> u(x) = e^(t/22)
+    e^(t/22) * R(t) - R(0) = integral (e^(t/22) * u(t)/22 dt)
+    
+    R(0) = 0 based on initial conditions
+
+    R(t) = e^(-t/22) * integral (e^(t/22) * u(t)/22 dt)
+    R(t) = e^(-t/22) / 22 * integral(e^(t/22) * u(t) dt) [t0 -> t]
+    R(t) = e^(-t/22) / 22 * integral(e^(t/22)) dt [0 -> t]
+    R(t) = e^(-t/22) / 22 * (22 * e^(t/22) - 22)
+    R(t) = e^(-t/22) * (e^(t/22) - 1)
+    R(t) = 1 - e^(-t/22) t>= 0, 0 for t < 0
+    Unit Step Response!
+
+    We can do this because we have the assumtion of 0 initial conditions.
+
+    Graph called 4-ii-Unit-Step-Response
+
+4.iii
+    The impulse response can be derived from the unit step response.
+    Derivitive of R step = h(t)
+    h(t) = e^(-t/22) / 22, t >= 0, 0 for t < 0
+
+    Graph called 4-iii-Impulse-Response
+
+
+
     
 
     

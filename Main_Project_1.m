@@ -320,3 +320,32 @@ end
 
 
 % Problem 4
+
+% tau * r'(t) + r(t) = r_inf
+% All initial conditions assumed 0 for initial steps
+tau = 22;
+plots_4 = [0, 1];
+
+% 4.i derived in writeup
+    % System is time invarient, causual, stable, and linear
+    
+%4.ii Unit Step Response, Equation Derived in Writeup
+t = 1:0.01:100;
+R_Step = 1 - exp(-t/22);
+
+if plots_4(1) ~= 0
+    figure;
+    plot(t, R_Step);
+    xlabel("Time [s]");
+    ylabel("Resistance [ohm]");
+end
+
+%4.iii Impulse Response, Equation Derived in Writeup
+R_Impulse = exp(-t/22) / 22
+
+if plots_4(2) ~= 0
+    figure;
+    plot(t, R_Impulse);
+    xlabel("Time [s]");
+    ylabel("Resistance [ohm]");
+end

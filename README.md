@@ -6,5 +6,4 @@
 
 # Code files are from the original project download
 
-# To view original code plots, go through the codeFile and enable 
-# array bits to one for the corresponding plot. Then re-run matlab-code
+# To view original code plots, go through the codeFile and enable array bits to one for the corresponding plot. Then re-run matlab-code
