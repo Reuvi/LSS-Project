@@ -469,3 +469,9 @@ if plots_5(3) ~= 0
 
     hold off;
 end
+
+%5.v
+
+%5.vi
+
+%5.vii and 5.viii in the writeup
