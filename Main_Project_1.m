@@ -324,7 +324,7 @@ end
 % tau * r'(t) + r(t) = r_inf
 % All initial conditions assumed 0 for initial steps
 tau = 22;
-plots_4 = [1, 1, 1, 1];
+plots_4 = [0, 0, 0, 0];
 
 % 4.i derived in writeup
     % System is time invarient, causual, stable, and linear
@@ -404,6 +404,68 @@ N12=12
 L12=4096
 DV12=5/(4096) % 0.0012
 
-%5.ii vout[n] = vout()
-n = 0
-tS = 0.1
+%5.ii vout[n] = vout(nTs), where the original function domain from 0 -> 100 so max value n1/10 = 100, n = 1000
+n = 0:1:1000;
+tS = 0.1;
+sampled_vout = 5 * 10^4 ./ ((7591.2 + exp(-(n * tS)/22) * 22769.8) + 10^4); % as derived before replace t with n*Ts 
+
+%5.iii
+% from class Vq[n] = Δ * (⌊(x[n]) / Δ⌋ + 1/2), where this is K in their formula and delta chances for each
+
+
+k8 = min(floor(sampled_vout ./ DV8), L8 - 1);
+ADC8 = (k8 + 0.5) * DV8;
+
+k10 = min(floor(sampled_vout ./ DV10), L10 - 1);
+ADC10 = (k10 + 0.5) * DV10;
+
+k12 = min(floor(sampled_vout ./ DV12), L12 - 1);
+ADC12 = (k12 + 0.5) * DV12;
+
+%5.iv, graphs in graph section
+plots_5 = [1, 1, 1];
+
+if plots_5(1) ~= 0
+    figure;
+    plot(t, vout_realistic, 'w-', 'LineWidth', 6);
+    xlabel("Time [s]");
+    ylabel("Voltage [v]");
+    title("ADC 8")
+
+    hold on;
+
+    plot(n*tS, sampled_vout, 'r-', 'LineWidth', 4);
+    plot(n*tS, ADC8, 'g-', 'LineWidth', 2);
+
+    hold off;
+end
+
+if plots_5(2) ~= 0
+    figure;
+    plot(t, vout_realistic, 'w-', 'LineWidth', 6);
+    xlabel("Time [s]");
+    ylabel("Voltage [v]");
+    title("ADC 10")
+
+    hold on;
+
+    plot(n*tS, sampled_vout, 'r-', 'LineWidth', 4);
+    plot(n*tS, ADC10, 'g-', 'LineWidth', 2);
+
+    hold off;
+end
+
+if plots_5(3) ~= 0
+    figure;
+    plot(t, vout_realistic, 'w-', 'LineWidth', 6);
+    xlabel("Time [s]");
+    ylabel("Voltage [v]");
+    title("ADC 12")
+
+    hold on;
+
+    plot(n*tS, sampled_vout, 'r-', 'LineWidth', 4);
+    plot(n*tS, ADC12, 'g-', 'LineWidth', 2);
+
+    hold off;
+end
