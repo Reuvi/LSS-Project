@@ -324,13 +324,13 @@ end
 % tau * r'(t) + r(t) = r_inf
 % All initial conditions assumed 0 for initial steps
 tau = 22;
-plots_4 = [0, 0, 1, 1];
+plots_4 = [1, 1, 1, 1];
 
 % 4.i derived in writeup
     % System is time invarient, causual, stable, and linear
     
 %4.ii Unit Step Response, Equation Derived in Writeup
-t = 1:0.01:100;
+t = 0:0.01:100;
 R_Step = 1 - exp(-t/22);
 
 if plots_4(1) ~= 0
@@ -378,3 +378,32 @@ if plots_4(4) ~= 0
     xlabel("Time [s]");
     ylabel("Voltage [v]");
 end
+
+
+
+
+
+
+
+
+
+
+% Problem 5
+
+%5.i For each ADC resolution with N bits there are 2^N levels and the voltage resolution is V_REF/(2^N).
+    
+N8 = 8
+L8 =256 
+DV8= 5/(256) % 0.0195
+
+N10=10 
+L10=1024 
+DV10=5/(1024) % 0.0049
+
+N12=12
+L12=4096
+DV12=5/(4096) % 0.0012
+
+%5.ii vout[n] = vout()
+n = 0
+tS = 0.1
