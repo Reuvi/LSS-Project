@@ -108,8 +108,8 @@ function [x,y] = position(t)
         else
             fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1) +\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
             elapsed_time = elapsed_time + t_travel_rounded(i-1);
-            % there are sensing stops at i=1,3,5
-            if i==1 || i==3 || i==5
+            % there are sensing stops after reaching (8,15) and (20,5), i=2,4
+            if i==2 || i==4
                 elapsed_time = elapsed_time + t_sensing_once;
             end
         end
@@ -128,8 +128,8 @@ function [x,y] = position(t)
         else
             fprintf("    %.2f*r((t-%.2f)/%.2f)  -  %.2f*r((t-%.2f)/%.2f-1) +\n", location_diff, elapsed_time, t_travel_rounded(i-1), location_diff, elapsed_time, t_travel_rounded(i-1));
             elapsed_time = elapsed_time + t_travel_rounded(i-1);
-            % there are sensing stops at i=1,3,5
-            if i==1 || i==3 || i==5
+            % there are sensing stops after reaching (8,15) and (20,5), i=2,4
+            if i==2 || i==4
                 elapsed_time = elapsed_time + t_sensing_once;
             end
         end
@@ -214,16 +214,16 @@ end
 % PROBLEM 1 FINAL VALUES
 % x(t) = 2 +
 %     6.00*r((t-60.00)/14.32)  -  6.00*r((t-60.00)/14.32-1) +
-%     4.00*r((t-74.32)/6.41)  -  4.00*r((t-74.32)/6.41-1) +
+%     4.00*r((t-134.32)/6.41)  -  4.00*r((t-134.32)/6.41-1) +
 %     8.00*r((t-140.73)/9.44)  -  8.00*r((t-140.73)/9.44-1) +
-%     10.00*r((t-150.17)/14.15)  -  10.00*r((t-150.17)/14.15-1) +
+%     10.00*r((t-210.17)/14.15)  -  10.00*r((t-210.17)/14.15-1) +
 %     8.00*r((t-224.32)/8.55)  -  8.00*r((t-224.32)/8.55-1)
 %
 % y(t) = 2 +
 %     13.00*r((t-60.00)/14.32)  -  13.00*r((t-60.00)/14.32-1) +
-%     -5.00*r((t-74.32)/6.41)  -  -5.00*r((t-74.32)/6.41-1) +
+%     -5.00*r((t-134.32)/6.41)  -  -5.00*r((t-134.32)/6.41-1) +
 %     -5.00*r((t-140.73)/9.44)  -  -5.00*r((t-140.73)/9.44-1) +
-%     10.00*r((t-150.17)/14.15)  -  10.00*r((t-150.17)/14.15-1) +
+%     10.00*r((t-210.17)/14.15)  -  10.00*r((t-210.17)/14.15-1) +
 %     3.00*r((t-224.32)/8.55)  -  3.00*r((t-224.32)/8.55-1)
 
 % measurement coordinates at (2,2), (8,15), (20,5), (38,18)
