@@ -1,0 +1,30 @@
+Author: Hasan
+
+6.a 
+    Given that the propagation environment is modeled as an LTI system, we can
+    apply the system to a signal by convolving it with the impulse response.
+    Therefore in the case without noise, (** here means convolve)
+        r[n] = s[n] ** h[n]
+            => s[n] ** (a1 * Delta[n - N1] + a2 * Delta[n - N2])
+            => a1 * s[n - N1] + a2 * s[n - N2]
+
+    Physically a response signal at a time n is not instaneous as it has to 
+    propogate to the object and return, aswell as the response contains interference from previous waves that it sent out.
+
+6.b
+    No, the individual echos cannot be identified in the measured signal.
+    Graph to correlate evidence in 6-b-raw-sonar-signal
+
+6.c
+    Graph of the magnitude as the cross-correlation as a function of lag in 
+    6-c-cross-correlation. There are two distinct peaks at sample indices,
+        N1 = 641, N2 = 1401
+
+6.d 
+    The reason for the factor of two is that the sensor measures the reflection of the signal off the object. The sound must travel from the robot to the object then from the object to the robot. So the lag is from the sound travelling twice the distance to the object.
+        The computed distances are,
+            d1 = 1.0993m, and d2 = 2.4027m
+
+6.e
+    Based on the estimated obstacle distances the robot must stop because
+        d1 = 1.0933 < 1.5 = dSafe
