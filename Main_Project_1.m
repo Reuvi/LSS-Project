@@ -324,7 +324,7 @@ end
 % tau * r'(t) + r(t) = r_inf
 % All initial conditions assumed 0 for initial steps
 tau = 22;
-plots_4 = [0, 1];
+plots_4 = [0, 0, 1, 1];
 
 % 4.i derived in writeup
     % System is time invarient, causual, stable, and linear
@@ -348,4 +348,33 @@ if plots_4(2) ~= 0
     plot(t, R_Impulse);
     xlabel("Time [s]");
     ylabel("Resistance [ohm]");
+end
+
+%4.iv discusion in writeup, checked and their the same
+
+%4.v derivation and discussion in writeup
+rs_t90 = -22 * log(1/10)
+
+%4.vi, rinf at a steady state solution for c = 5, 50
+rinf_1_vi = 8.0*10^4 * 5^(-0.602)
+rinf_2_vi = 8.0*10^4 * 50^(-0.602)
+
+%RS Derived in writeup
+rs_actual = 7591.2 + exp(-t/22) * 22769.8
+
+if plots_4(3) ~= 0
+    figure;
+    plot(t, rs_actual);
+    xlabel("Time [s]");
+    ylabel("Resistance [ohm]");
+end
+
+%Vout derived in writeup
+vout_realistic = 5 * 10^4 ./ ((rs_actual) + 10^4)
+
+if plots_4(4) ~= 0
+    figure;
+    plot(t, vout_realistic);
+    xlabel("Time [s]");
+    ylabel("Voltage [v]");
 end

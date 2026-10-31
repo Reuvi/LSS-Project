@@ -88,6 +88,63 @@ Author: Reuven
 
     Graph called 4-iii-Impulse-Response
 
+4.iv (** convolve)
+    Rs(t) = u(t) * (e^(-t/22) / 22) ** u(t) 
+    Rs(t) 1/22 * integral(e^(-t/22)) [0, t] * u(t)
+    Rs(t) = (-(e^-t/22) - (-1)) * U(t)
+    Rs(t) = 1 - e^(-t/22) for t>= 0, 0 t < 0
+
+4.v
+    as t->inf Rs(t) approaches 1.
+    90% of its final value is 0.9
+    0.9 = 1 - e^(-t/22)
+    0.1 = e^(-t/22)
+    ln(0.1) = -t/22
+    -22ln(0.1) = t
+    t = 50.6569
+
+    Comparison: 
+    The spec sheet says the typical response time for readible values < 1 
+    minute to 90% for the sensor to be "stable". Our value of ~ 50 seconds
+    corresponds to this.
+
+4.vi
+    Recall that rinf(c) in a steady state solution for a long enough time
+    rinf(c) = 8.0*10^4*C^(-0.602)
+
+    theirfore Rs(0) = Rinf(5) = 30361 ohms
+    The concentration jumps to 50 ppm at \(t=0\) and remains there. The sensor
+    resistance gradually approaches Rinf2 = Rinf(50) = 7591.2 Ohm
+
+    Theirfore,
+    22r'(t) + r(t) = 7591.2 with initial condition r(0) = 30361
+    Solving this differential we using the same method as before we get
+    r'(t) + 1/22 * r(t) = 7591.2/22
+
+    u(x) = e^(integral(1/22)dt) => e^t/22
+
+    r(t) * e^t/22 - 30361 = 7591.2/22 * integral(e^t/22) [ 0, t]
+    r(t) *  e^t/22 = 7591.2/22 * integral(e^t/22) [ 0, t] + 30361
+    r(t) =  e^-t/22 * 7591.2/22 * integral(e^t/22) [ 0, t] + 30361 *  e^-t/22
+    r(t) =  (e^-t/22) * 7591.2 * (e^t/22 - 1) + 30361 *  e^-t/22
+    r(t) = 7591.2 -7591.2e^-t/22 + 30361e^-t/22
+    r(t) = 7591.2 + e^-t/22 * 22769.8
+
+    graph for r(t) derived here under 4-vi-realistic-rs
+
+    Now from problem 3 we get the equation for vout to be
+    Vout(t) = 5 * 10^4 / (Rs(t) + 10^4)
+    which becomes with our Rs 
+                <=>
+    Vout(t) = 5 * 10^4 / ((7591.2 + e^-t/22 * 22769.8) + 10^4)
+
+    graph under 4-vi-realistic-vout
+
+
+
+
+
+
 
 
     
